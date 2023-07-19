@@ -1,5 +1,13 @@
 {
-    "register":[
-        
-    ]
+  "register": [
+
+    {
+      "firstName": "hari",
+      "lastName": "harishmitha",
+      "email": "kharish@gmail.com",
+      "password": "123456",
+      "gender": "female",
+      "id": 3
+    }
+  ]
 }

@@ -20,8 +20,8 @@
             <MDBInput type="password" label="confirm Password" id="form3conPassword" v-model="form3conPassword"
                 wrapperClass="mb-4" required />
             <MDBCol>
-                <MDBRadio label="male" value="option1" v-model="radio2" inline name="inlineRadioOptions" />
-                <MDBRadio label="female" value="option2" v-model="radio2" inline name="inlineRadioOptions" />
+                <MDBRadio label="male" value="male" v-model="radio2" inline name="inlineRadioOptions" />
+                <MDBRadio label="female" value="female" v-model="radio2" inline name="inlineRadioOptions" />
             </MDBCol>
 
             <!-- Checkbox -->
@@ -36,51 +36,65 @@
 </template>
 
 <script>
-import {
-    MDBRow,
-    MDBCol,
-    MDBInput,
-
-    MDBBtn,
-    MDBRadio,
-
-} from "mdb-vue-ui-kit";
+import { MDBRow, MDBCol, MDBInput, MDBBtn, MDBRadio } from "mdb-vue-ui-kit";
+import axios from "axios";
 import { ref } from "vue";
 
 export default {
-    components: {
-        MDBRow,
-        MDBCol,
-        MDBInput,
-        MDBRadio,
-        MDBBtn,
+  components: {
+    MDBRow,
+    MDBCol,
+    MDBInput,
+    MDBRadio,
+    MDBBtn,
+  },
+  setup() {
+    const form3FirstName = ref("");
+    const form3LastName = ref("");
+    const form3Email = ref("");
+    const form3Password = ref("");
+    const form3conPassword = ref("");
+    const radio2 = ref(""); 
 
-    },
-    setup() {
-        const checkForm = (event) => {
-            event.target.classList.add('was-validated');
-        };
-        const form3FirstName = ref("");
-        const form3LastName = ref("");
-        const form3Email = ref("");
-        const form3Password = ref("");
-        const form3conPassword = ref("");
-        const radio2 = ref('radio2');
-        const form3SubscribeCheck = ref(true);
+    const checkForm = (event) => {
+      event.target.classList.add("was-validated");
+      if (event.target.checkValidity()) {
+        saveFormDataToServer();
+      }
+    };
 
-        return {
-            form3FirstName,
-            form3LastName,
-            form3Email,
-            form3Password,
-            form3conPassword,
-            form3SubscribeCheck,
-            radio2,
-            checkForm,
-        };
-    },
+    const saveFormDataToServer = () => {
+      const formData = {
+        firstName: form3FirstName.value,
+        lastName: form3LastName.value,
+        email: form3Email.value,
+        password: form3Password.value,
+        gender: radio2.value,
+      };
+
+      axios
+        .post("http://localhost:3000/register", formData)
+        .then(() => {
+          console.log("Form data sent successfully!");
+        })
+        .catch((error) => {
+          console.error("Error sending form data:", error);
+        });
+    };
+
+    return {
+      form3FirstName,
+      form3LastName,
+      form3Email,
+      form3Password,
+      form3conPassword,
+      radio2,
+      checkForm,
+    };
+  },
 };
 </script>
+
 
 <style>
 .register {
@@ -89,3 +103,4 @@ export default {
     margin-top: 100px;
 }
 </style>
+
